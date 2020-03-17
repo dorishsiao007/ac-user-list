@@ -1,0 +1,14 @@
+.row {
+  margin: 10px;
+}
+.card-title {
+  text-align: center;
+}
+
+.more-info {
+  margin:0px auto;
+}
+
+.modal-header h5{
+  color:black;
+}
