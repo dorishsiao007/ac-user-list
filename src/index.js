@@ -2,14 +2,30 @@
   // variable
   const baseUrl = 'https://lighthouse-user-api.herokuapp.com/api/v1/users/'
   const data = []
+  let paginationData  = []
 
   const userList = document.querySelector('.user-list')
   const pagination = document.querySelector('#pagination')
+  const searchBar = document.querySelector('#search-bar')
+  const searchInput = document.querySelector('#search-input')
+  const search = document.querySelector('#search-icon')
 
   const itemPrePage = 12
   
   //----------- listener event -------------
-  // listener More Detail button
+  // listener query icon
+  searchBar.addEventListener('click', (event) => {
+    if (event.target.tagName === 'I') {
+      let inputValue = searchInput.value
+      let searchResults = data.filter(user => user.name.toLowerCase().includes(inputValue))
+      console.log(searchResults)
+      // re-create pagination
+      totalPagesHtml(searchResults)
+      showPaginationData(1, searchResults)
+    }
+  })
+
+  // listener more detail button
   userList.addEventListener('click', (event) => {
     if (event.target.matches('.more-detail')) {
       showUserDetail(event.target.dataset.id)
@@ -20,7 +36,7 @@
   pagination.addEventListener('click', (event) => {
     if (event.target.tagName === 'A') {
       let page = event.target.dataset.page
-      getPaginationData(page, data)
+      showPaginationData(page, data)
     }
   })
   
@@ -31,7 +47,7 @@
       data.push(...res.data.results)
       //generateUserCardHtml(data)
       totalPagesHtml(data)
-      getPaginationData(1, data)
+      showPaginationData(1, data)
   })
     .catch((err) => {
       console.log(err)
@@ -39,9 +55,11 @@
   
   // ------------ function ---------------
   // function: get pagination data
-  function getPaginationData(page, data){
+  function showPaginationData(page, data){
+    paginationData = data || paginationData
+    console.log(paginationData)
     let offSet = (page - 1) * itemPrePage
-    let paginationDataList = data.slice(offSet, offSet + itemPrePage)
+    let paginationDataList = paginationData.slice(offSet, offSet + itemPrePage)
     generateUserCardHtml(paginationDataList)
   }
 

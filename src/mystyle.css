@@ -12,3 +12,13 @@
 .modal-header h5{
   color:black;
 }
+
+.fa-search {
+  color: #fff;
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 1.3em;
+}
+
+form button {
+  background: black;
+}
