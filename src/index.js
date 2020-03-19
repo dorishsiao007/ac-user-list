@@ -32,6 +32,7 @@
   // listener more detail button
   userList.addEventListener('click', (event) => {
     if (event.target.matches('.more-detail')) {
+      console.log(event.target.dataset.id)
       showUserDetail(event.target.dataset.id)
     }
   })
@@ -118,18 +119,10 @@
       let avatar = user.avatar
       let name = user.name
       let id = user.id
+
       htmlContent += `
-        <div class="col-sm-3">
-          <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-            <!--img class="card-img-top" src="${avatar}" alt="Card image cap"-->
-            <div class="card-body text-center">
-              <h5 class="card-title">${name}</h5>
-              <!-- Button trigger modal -->
-              <button type="button" class="more-detail btn btn-primary" data-toggle="modal" data-id="${id}" data-target="#userDetail">
-                More Detail
-              </button>
-            </div>
-          </div>
+        <div class="col-sm-3 m-3">
+          <img src="${avatar}" title="${name}" alt="user-img" class="img-thumbnail more-detail" data-toggle="modal" data-id="${id}" data-target="#userDetail">
         </div>
       `
     })
