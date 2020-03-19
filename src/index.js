@@ -7,8 +7,8 @@
   const userList = document.querySelector('.user-list')
   const pagination = document.querySelector('#pagination')
   const searchBar = document.querySelector('#search-bar')
-  const searchInput = document.querySelector('#search-input')
-  const search = document.querySelector('#search-icon')
+  const searchNameInput = document.querySelector('#search-input')
+  const searchGenderInput = document.querySelector('#input-gender')
 
   const itemPrePage = 12
   
@@ -16,9 +16,13 @@
   // listener query icon
   searchBar.addEventListener('click', (event) => {
     if (event.target.tagName === 'I') {
-      let inputValue = searchInput.value
-      let searchResults = data.filter(user => user.name.toLowerCase().includes(inputValue))
-      console.log(searchResults)
+      let inputNameValue = searchNameInput.value
+      let inputGenderValue = searchGenderInput.value
+      let searchResults = data.filter(user => user.name.toLowerCase().includes(inputNameValue))
+
+      if (inputGenderValue !== 'Gender Choose') {
+        searchResults = searchResults.filter(user => user.gender === inputGenderValue.toLowerCase())
+      }
       // re-create pagination
       totalPagesHtml(searchResults)
       showPaginationData(1, searchResults)
@@ -57,7 +61,6 @@
   // function: get pagination data
   function showPaginationData(page, data){
     paginationData = data || paginationData
-    console.log(paginationData)
     let offSet = (page - 1) * itemPrePage
     let paginationDataList = paginationData.slice(offSet, offSet + itemPrePage)
     generateUserCardHtml(paginationDataList)
