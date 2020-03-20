@@ -9,10 +9,23 @@
   const searchBar = document.querySelector('#search-bar')
   const searchNameInput = document.querySelector('#search-input')
   const searchGenderInput = document.querySelector('#input-gender')
+  const showUserMode = document.getElementById('show-user-mode')
 
   const itemPrePage = 12
+  let currentViewMode = 'card'
   
   //----------- listener event -------------
+  // listen to change main page mode
+  showUserMode.addEventListener('click', (event) => {
+    if (event.target.matches('.show-user-card')) {
+      currentViewMode = 'card'
+      showPaginationData(1, currentViewMode, data)
+    } else if (event.target.matches('.show-user-list')) {
+      currentViewMode = 'list'
+      showPaginationData(1, currentViewMode, data)
+    }
+  })
+
   // listener query icon
   searchBar.addEventListener('click', (event) => {
     if (event.target.tagName === 'I') {
@@ -25,7 +38,7 @@
       }
       // re-create pagination
       totalPagesHtml(searchResults)
-      showPaginationData(1, searchResults)
+      showPaginationData(1, currentViewMode, searchResults)
     }
   })
 
@@ -41,7 +54,7 @@
   pagination.addEventListener('click', (event) => {
     if (event.target.tagName === 'A') {
       let page = event.target.dataset.page
-      showPaginationData(page)
+      showPaginationData(page, currentViewMode)
     }
   })
   
@@ -52,7 +65,7 @@
       data.push(...res.data.results)
       //generateUserCardHtml(data)
       totalPagesHtml(data)
-      showPaginationData(1, data)
+      showPaginationData(1, currentViewMode, data)
   })
     .catch((err) => {
       console.log(err)
@@ -60,11 +73,18 @@
   
   // ------------ function ---------------
   // function: get pagination data
-  function showPaginationData(page, data){
+  function showPaginationData(page, mode, data){
     paginationData = data || paginationData
     let offSet = (page - 1) * itemPrePage
     let paginationDataList = paginationData.slice(offSet, offSet + itemPrePage)
-    generateUserCardHtml(paginationDataList)
+
+    if (mode === 'card'){
+      generateUserCardHtml(paginationDataList)
+    }
+    else if (mode === 'list'){
+      generateUserListHtml(paginationDataList)
+    }
+    
   }
 
   // function: create total pages html
@@ -115,7 +135,7 @@
     })
   }
   
-  // function: generate user list html
+  // function: generate user card html
   function generateUserCardHtml(data){
     let htmlContent = ''
     
@@ -126,10 +146,32 @@
 
       htmlContent += `
         <div class="col-sm-3 m-3">
-          <img src="${avatar}" title="${name}" alt="user-img" class="img-thumbnail more-detail" data-toggle="modal" data-id="${id}" data-target="#userDetail">
+          <img src="${avatar}" title="${name}" alt="user-img" class="img-thumbnail more-detail user-img" data-toggle="modal" data-id="${id}" data-target="#userDetail">
         </div>
       `
     })
+    userList.innerHTML = htmlContent
+  }
+
+  // function: generate user list html
+  function generateUserListHtml(data){
+    let htmlContent = ''
+    htmlContent += '<ul class="list-group list-group-flush">'
+
+    data.forEach(function (user) {
+      let name = user.name
+      let id = user.id
+
+      htmlContent += `
+      <li class="list-group-item d-flex flex-row justify-content-between">
+        <div class="col-8">${name}</div>
+        <div class="col-4">
+          <button class="btn btn-primary more-detail" data-toggle="modal" data-target="#userDetail" data-id="${id}">More</button>
+        </div>
+      </li>
+      `
+    })
+    htmlContent += '</ul>'
     userList.innerHTML = htmlContent
   }
 })()

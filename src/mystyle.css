@@ -19,7 +19,7 @@
   font-size: 1.3em;
 }
 
-.more-detail, .img-fluid {
+.user-img, .img-fluid {
   border-radius:50%;
 }
 
@@ -31,6 +31,10 @@
   color: blue;
 }
 
-h5 {
-  text-align: center;
+.detail-title {
+  width: 100%;
+}
+
+.list-group {
+  width: 100%;
 }
