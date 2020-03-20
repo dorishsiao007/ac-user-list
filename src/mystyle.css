@@ -19,6 +19,18 @@
   font-size: 1.3em;
 }
 
-.more-detail, .img-fluid{
+.more-detail, .img-fluid {
   border-radius:50%;
+}
+
+.fa-female {
+  color: red;
+}
+
+.fa-male {
+  color: blue;
+}
+
+h5 {
+  text-align: center;
 }

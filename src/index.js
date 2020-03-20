@@ -41,7 +41,7 @@
   pagination.addEventListener('click', (event) => {
     if (event.target.tagName === 'A') {
       let page = event.target.dataset.page
-      showPaginationData(page, data)
+      showPaginationData(page)
     }
   })
   
@@ -87,8 +87,6 @@
     const modalTitle = document.getElementById('show-name')
     const modalImage = document.getElementById('show-image')
     const modalEmail = document.getElementById('show-email')
-    const modalGender = document.getElementById('show-gender')
-    const modalAge = document.getElementById('show-age')
     const modalRegion = document.getElementById('show-region')
     const modalBirthday = document.getElementById('show-birthday')
     
@@ -97,14 +95,20 @@
     axios.get(url)
       .then((res) => {
         let userDetail = res.data
+        let genderIconHtml = ''
+        if (userDetail.gender === 'female'){
+          genderIconHtml = '<i class="fa fa-female" aria-hidden="true"></i>'
+        }
+        else if (userDetail.gender === 'male'){
+          genderIconHtml = '<i class="fa fa-male" aria-hidden="true"></i>'
+        }
+
        // insert data into modal ui
-      modalTitle.textContent = userDetail.name
+      modalTitle.innerHTML = `${userDetail.name} ${genderIconHtml} ${userDetail.age}`
       modalImage.innerHTML = `<img src="${userDetail.avatar}" class="img-fluid" alt="Responsive image">`
-      modalEmail.textContent = `E-Mail: ${userDetail.email}`
-      modalGender.textContent = `Gender: ${userDetail.gender}`
-      modalAge.textContent = `Age: ${userDetail.age}`
-      modalRegion.textContent = `Region: ${userDetail.region}`
-      modalBirthday.textContent = `Birthday: ${userDetail.birthday}`
+      modalEmail.innerHTML = `<i class="fa fa-envelope-open" aria-hidden="true"></i> ${userDetail.email}`
+      modalRegion.innerHTML = `<i class="fa fa-flag" aria-hidden="true"></i> ${userDetail.region}`
+      modalBirthday.innerHTML = `<i class="fa fa-birthday-cake mr-3" aria-hidden="true"></i> ${userDetail.birthday}`
     })
       .catch((err) => {
       console.log(err)
